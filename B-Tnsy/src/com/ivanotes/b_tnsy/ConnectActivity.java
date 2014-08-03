@@ -1,5 +1,7 @@
 package com.ivanotes.b_tnsy;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.util.Set;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -19,12 +21,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class ConnectActivity extends Activity{
 	// Debugging
-    private static final String TAG = "ConnectActivity";
+	private static final String TAG = "btnsyapp";
+    private static final String DSTR = "ConnectActivity";
     private static final boolean D = true;
-    //It is used like this: if(D) Log.d(TAG, "My debug message");
+    //It is used like this: if(D) Log.d(TAG, DSTR + "My debug message");
     
  // Return Intent extra
     public static String EXTRA_DEVICE_ADDRESS = "device_address";
@@ -139,13 +143,16 @@ public class ConnectActivity extends Activity{
             // Get the device MAC address, which is the last 17 chars in the View
             String info = ((TextView) v).getText().toString();
             String address = info.substring(info.length() - 17);
-
-            // Create the result Intent and include the MAC address
+            if(D) Log.d(TAG, DSTR + "Iths going to try the following address:"+address);
+            
+        	// Create the result Intent and include the MAC address
+            	
             Intent intent = new Intent();
             intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
 
             // Set result and finish this Activity
             setResult(Activity.RESULT_OK, intent);
+              
             finish();
         }
     };
