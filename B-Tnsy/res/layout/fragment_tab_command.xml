@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ivanotes.b_tnsy.TabCommand" >
+
+    <!-- TODO: Update blank fragment layout -->
+
+	<LinearLayout 
+	    android:id="@+id/contains_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="96dp"
+        android:gravity="center"
+		android:orientation="vertical">
+	    
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/hello_blank_fragment" />
+	    <Button
+	        android:id="@+id/btn_addt"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+
+	        android:text="addtab" />
+	    <Button
+	        android:id="@+id/btn_remt"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="removetab" />
+	    
+	</LinearLayout>
+    
+
+</RelativeLayout>

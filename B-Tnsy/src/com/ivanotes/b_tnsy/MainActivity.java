@@ -141,6 +141,16 @@ public class MainActivity extends ActionBarActivity implements
 		Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 		startActivityForResult(intent, REQUEST_CODE_ENABLE_BLUETOOTH);		
 	}
+	 @Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		 if(btExists){
+			 if(mBluetoothAdapter.isEnabled()){
+					mBluetoothAdapter.disable();
+				}
+		 }
+		super.onDestroy();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -156,8 +166,18 @@ public class MainActivity extends ActionBarActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_connect) {
-			Intent intent = new Intent(this, ConnectActivity.class);
-			startActivityForResult(intent, REQUEST_CONNECT_DEVICE_OTHER);
+			if(mBluetoothAdapter.isEnabled()){
+				if (mBtService.connectSucess){
+	            	Toast.makeText(getApplicationContext(), R.string.toast_bt_already_paired, Toast.LENGTH_LONG).show();
+	            }
+				else{
+	            	Intent intent = new Intent(this, ConnectActivity.class);
+	    			startActivityForResult(intent, REQUEST_CONNECT_DEVICE_OTHER);
+	            }
+			}
+			else{
+            	Toast.makeText(getApplicationContext(), R.string.toast_bt_enable_first, Toast.LENGTH_LONG).show();
+			}
             return true;
 		}
 		else if (id == R.id.action_enable_bt) {
@@ -170,10 +190,9 @@ public class MainActivity extends ActionBarActivity implements
 			}
             return true;
 		}
-		else if (id == R.id.action_settings) {
-			Toast toast = Toast.makeText(getApplicationContext(), 
-					R.string.toast_txt_no_settings, Toast.LENGTH_SHORT);
-			toast.show();
+		else if (id == R.id.action_about) {
+			Intent intent = new Intent(this, AboutActivity.class);
+	        this.startActivity(intent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -196,6 +215,15 @@ public class MainActivity extends ActionBarActivity implements
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
+	
+	public void addTab(int iTab){
+		//android.app.ActionBar ab = getActionBar();
+		//ab.
+	}
+	public void removeTab(int iTab){
+		android.app.ActionBar ab = getActionBar();
+		ab.removeTab(ab.getTabAt(iTab));
+	}
 
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -212,8 +240,20 @@ public class MainActivity extends ActionBarActivity implements
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a PlaceholderFragment (defined as a static inner class
 			// below).
-			return PlaceholderFragment.newInstance(position + 1);
+			switch (position) {
+            case 0:
+                // Command fragment activity
+                return TabWelcome.newInstance(position + 1);
+            case 1:
+                // Connection fragmenW activity
+            	return TabCommand.newInstance(position + 1);
+            case 2:
+                // Other fragment activity
+                return PlaceholderFragment.newInstance(position + 1);
+            }
+			return null;
 		}
+		
 
 		@Override
 		public int getCount() {
